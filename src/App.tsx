@@ -71,8 +71,8 @@ function App() {
                               <td>{user.lastname}</td>
                               <td>{user.firstname}</td>
                               <td>{user.age}</td>
-                              <td className={user.status === 'true' ? 'active' : 'inactive'}>
-                                  {user.status === 'true' ? 'Actif' : 'Inactif'}
+                              <td className={user.status === 'actif' || user.status === 'true' ? 'active' : 'inactive'}>
+                                  {user.status === 'actif' || user.status === 'true' ? 'Actif' : 'Inactif'}
                               </td>
                               <td>
                                   <button className="button" onClick={() => handleEditUser(user.id)}>Modifier</button>

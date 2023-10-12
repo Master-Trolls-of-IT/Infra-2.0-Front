@@ -1,4 +1,6 @@
 import {useState} from "react";
+import useEffectOnce from "./utils/use-effect-once";
+import useServicesData from "./services/get-users";
 
 const useAppData = () => {
     const [users, setUsers] = useState([
@@ -9,16 +11,14 @@ const useAppData = () => {
             firstname: 'Prénom1',
             age: '30',
             status: 'true',
-        },
-        {
-            id: 2,
-            username: 'Utilisateur2',
-            lastname: 'Nom2',
-            firstname: 'Prénom2',
-            age: '25',
-            status: 'false',
-        },
+        }
     ]);
+
+    const { createUser, getUsers, updateUser, deleteUser } = useServicesData(setUsers);
+
+    useEffectOnce(() => {
+        getUsers(setUsers);
+    });
 
     const [editingUser, setEditingUser] = useState(-1);
     const [newUser, setNewUser] = useState({
@@ -45,16 +45,30 @@ const useAppData = () => {
 
     const handleSaveUser = (userId: number) => {
         setEditingUser(-1);
+
+        users.map((user) => {
+            if (user.id === userId) {
+                updateUser(user);
+                return;
+            }
+            return;
+        });
     };
 
     const handleDeleteUser = (userId: number) => {
-        const updatedUsers = users.filter((user) => user.id !== userId);
-        setUsers(updatedUsers);
+        deleteUser(userId);
     };
 
     const handleCreateUser = () => {
-        const newUserWithId = { ...newUser, id: users.length + 1, status: newUser.status === 'true' ? "true" : "false" };
-        setUsers([...users, newUserWithId]);
+        createUser({
+            id: users.length + 1,
+            username: newUser.username,
+            lastname: newUser.lastname,
+            firstname: newUser.firstname,
+            age: Number(newUser.age),
+            rights: 0,
+            status: newUser.status === 'actif' || newUser.status === 'true' ? 'actif' : 'non actif'
+        });
         setNewUser({
             username: '',
             lastname: '',
