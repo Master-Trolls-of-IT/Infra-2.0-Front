@@ -3,7 +3,7 @@ import {Dispatch, SetStateAction} from "react";
 import {user} from "../user/user";
 
 const useServicesData = (setUsers: Dispatch<SetStateAction<user[]>>): any => {
-    const baseURL = 'http://ec2-52-47-182-154.eu-west-3.compute.amazonaws.com/users'
+    const baseURL = 'http://' + process.env.URL_BACK + '/users'
     const baseHeaders = {
         'Content-Type': 'application/json'
     };
